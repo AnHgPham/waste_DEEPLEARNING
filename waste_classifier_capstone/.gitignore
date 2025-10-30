@@ -49,6 +49,9 @@ env/
 *~
 .DS_Store
 
+# Claude Code settings (not needed in repo)
+.claude/
+
 # Project specific
 # Data directories (too large for git)
 data/raw/*
