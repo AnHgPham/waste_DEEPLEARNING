@@ -1,0 +1,107 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project specific
+# Data directories (too large for git)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Model outputs (too large for git)
+outputs/models/*.keras
+outputs/models/*.h5
+outputs/models/*.tflite
+outputs/models/*.pb
+!outputs/models/.gitkeep
+
+# Reports and visualizations (generated)
+outputs/reports/*
+!outputs/reports/.gitkeep
+
+# Screenshots (generated)
+outputs/screenshots/*
+!outputs/screenshots/.gitkeep
+
+# Logs
+outputs/logs/*
+!outputs/logs/.gitkeep
+*.log
+
+# TensorFlow
+*.ckpt
+*.ckpt.*
+checkpoint
+
+# PyTorch
+*.pth
+*.pt
+
+# YOLO
+yolov8*.pt
+runs/
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# Archive backups (cleaned up files)
+archive/removed_markdown_files/
+
+# Keep diagrams (generated but should be in repo)
+!docs/diagrams/*.png
+
