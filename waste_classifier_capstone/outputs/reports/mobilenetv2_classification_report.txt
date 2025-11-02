@@ -1,0 +1,20 @@
+Model: mobilenetv2
+Test Accuracy: 0.9390
+Test Loss: 0.1867
+
+              precision    recall  f1-score   support
+
+     battery     0.9663    0.9053    0.9348        95
+  biological     0.9700    0.9604    0.9652       101
+   cardboard     0.9591    0.8962    0.9266       183
+     clothes     0.9888    0.9925    0.9907       534
+       glass     0.9365    0.9150    0.9256       306
+       metal     0.8692    0.9029    0.8857       103
+       paper     0.8736    0.9408    0.9060       169
+     plastic     0.8634    0.8894    0.8762       199
+       shoes     0.9655    0.9849    0.9751       199
+       trash     0.8804    0.8526    0.8663        95
+
+    accuracy                         0.9390      1984
+   macro avg     0.9273    0.9240    0.9252      1984
+weighted avg     0.9398    0.9390    0.9391      1984
