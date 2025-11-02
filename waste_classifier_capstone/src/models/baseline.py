@@ -30,6 +30,10 @@ def build_baseline_model(input_shape, num_classes):
     model = keras.Sequential(name="Baseline_CNN")
     model.add(layers.Input(shape=input_shape))
 
+    # CRITICAL: Rescale pixel values from [0, 255] to [0, 1]
+    # This is essential for baseline CNN training stability
+    model.add(layers.Rescaling(1./255))
+
     # Convolutional Blocks
     # Each block: Conv -> Conv -> Batch Norm -> Max Pooling
     for filters in BASELINE_FILTERS:

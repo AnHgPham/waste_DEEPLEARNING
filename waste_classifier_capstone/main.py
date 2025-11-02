@@ -186,6 +186,8 @@ Examples:
                         help='Run data preprocessing')
     parser.add_argument('--train-baseline', action='store_true',
                         help='Train baseline CNN model')
+    parser.add_argument('--continue-baseline', action='store_true',
+                        help='Continue training baseline model (resume from checkpoint)')
     parser.add_argument('--train-transfer', action='store_true',
                         help='Train transfer learning model')
     parser.add_argument('--evaluate', action='store_true',
@@ -272,6 +274,12 @@ Examples:
         if args.epochs:
             script_args.extend(['--epochs', str(args.epochs)])
         success = run_script("scripts/03_baseline_training.py", script_args)
+
+    elif args.continue_baseline:
+        script_args = []
+        if args.epochs:
+            script_args.extend(['--epochs', str(args.epochs)])
+        success = run_script("scripts/07_continue_baseline_training.py", script_args)
 
     elif args.train_transfer:
         script_args = []

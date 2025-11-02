@@ -51,7 +51,7 @@ def plot_confusion_matrix(cm, class_names, save_path=None):
     
     if save_path:
         plt.savefig(save_path, dpi=FIGURE_DPI)
-        print(f"✅ Confusion matrix saved to {save_path}")
+        print(f"[OK] Confusion matrix saved to {save_path}")
     else:
         plt.show()
 
@@ -66,16 +66,16 @@ def main(args):
     model_path = get_model_path(model_name, 'final')
     
     if not model_path.exists():
-        print(f"\n❌ ERROR: Model not found: {model_path}")
+        print(f"\n[ERROR] Model not found: {model_path}")
         print(f"\n   Please train the {model_name} model first.")
         return
     
-    print(f"\n📦 Loading model: {model_name}")
+    print(f"\n[LOADING] Model: {model_name}")
     model = tf.keras.models.load_model(model_path)
-    print(f"   ✅ Model loaded from {model_path}")
-    
+    print(f"   [OK] Model loaded from {model_path}")
+
     # Load test dataset
-    print(f"\n📂 Loading test dataset...")
+    print(f"\n[LOADING] Test dataset...")
     test_ds = tf.keras.utils.image_dataset_from_directory(
         TEST_DIR,
         image_size=IMG_SIZE,
@@ -85,30 +85,25 @@ def main(args):
     )
     
     # Apply appropriate preprocessing based on model type
-    # MobileNetV2: Keep [0,255], preprocessing is built into the model
-    # Baseline: Apply Rescaling(1./255) manually
-    if model_name == 'baseline':
-        print(f"   Applying baseline preprocessing (Rescaling 0-1)...")
-        normalization_layer = tf.keras.layers.Rescaling(1./255)
-        test_ds = test_ds.map(lambda x, y: (normalization_layer(x), y))
-    else:
-        print(f"   Using model's built-in preprocessing (MobileNetV2)...")
-        # MobileNetV2 has preprocess_input built-in, no need to normalize here
-        # Images remain in [0, 255] range and will be normalized to [-1, 1] by the model
+    # IMPORTANT: Both baseline and MobileNetV2 have preprocessing built-in!
+    # Baseline: Has Rescaling(1./255) as first layer
+    # MobileNetV2: Has preprocess_input built-in
+    # Therefore, NO additional preprocessing needed for either model
+    print(f"   Using model's built-in preprocessing...")
     
-    print(f"   ✅ Test dataset loaded")
-    
+    print(f"   [OK] Test dataset loaded")
+
     # Evaluate model
-    print(f"\n🧪 Evaluating model on test set...")
+    print(f"\n[EVALUATING] Model on test set...")
     test_loss, test_acc, test_top5 = model.evaluate(test_ds, verbose=1)
-    
-    print(f"\n📈 Test Results:")
+
+    print(f"\n[RESULTS] Test Results:")
     print(f"   - Test Accuracy: {test_acc:.4f} ({test_acc*100:.2f}%)")
     print(f"   - Top-5 Accuracy: {test_top5:.4f} ({test_top5*100:.2f}%)")
     print(f"   - Test Loss: {test_loss:.4f}")
-    
+
     # Generate predictions for detailed analysis
-    print(f"\n🔮 Generating predictions...")
+    print(f"\n[GENERATING] Predictions...")
     y_true = []
     y_pred = []
     
@@ -119,17 +114,17 @@ def main(args):
     
     y_true = np.array(y_true)
     y_pred = np.array(y_pred)
-    
-    print(f"   ✅ {len(y_true)} predictions generated")
-    
+
+    print(f"   [OK] {len(y_true)} predictions generated")
+
     # Generate confusion matrix
-    print(f"\n📊 Generating confusion matrix...")
+    print(f"\n[GENERATING] Confusion matrix...")
     cm = confusion_matrix(y_true, y_pred)
     cm_path = get_report_path(model_name, 'confusion_matrix')
     plot_confusion_matrix(cm, CLASS_NAMES, save_path=cm_path)
-    
+
     # Generate classification report
-    print(f"\n📋 Generating classification report...")
+    print(f"\n[GENERATING] Classification report...")
     report = classification_report(y_true, y_pred, target_names=CLASS_NAMES, digits=4)
     
     print("\n" + "=" * 70)
@@ -144,35 +139,35 @@ def main(args):
         f.write(f"Test Accuracy: {test_acc:.4f}\n")
         f.write(f"Test Loss: {test_loss:.4f}\n\n")
         f.write(report)
-    print(f"\n✅ Classification report saved to {report_path}")
-    
+    print(f"\n[OK] Classification report saved to {report_path}")
+
     # Per-class accuracy
-    print(f"\n📊 Per-Class Accuracy:")
+    print(f"\n[RESULTS] Per-Class Accuracy:")
     for i, class_name in enumerate(CLASS_NAMES):
         class_mask = (y_true == i)
         class_acc = (y_pred[class_mask] == i).sum() / class_mask.sum()
         print(f"   {class_name:12s}: {class_acc:.4f} ({class_acc*100:.2f}%)")
     
     # Find most confused classes
-    print(f"\n🔍 Most Confused Classes (Top 5):")
+    print(f"\n[ANALYSIS] Most Confused Classes (Top 5):")
     cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     np.fill_diagonal(cm_normalized, 0)  # Ignore diagonal
-    
+
     confused_pairs = []
     for i in range(len(CLASS_NAMES)):
         for j in range(len(CLASS_NAMES)):
             if i != j:
                 confused_pairs.append((CLASS_NAMES[i], CLASS_NAMES[j], cm_normalized[i, j]))
-    
+
     confused_pairs.sort(key=lambda x: x[2], reverse=True)
-    
+
     for i, (true_class, pred_class, confusion_rate) in enumerate(confused_pairs[:5], 1):
-        print(f"   {i}. {true_class} → {pred_class}: {confusion_rate:.2%}")
-    
+        print(f"   {i}. {true_class} -> {pred_class}: {confusion_rate:.2%}")
+
     print("\n" + "=" * 70)
-    print("✅ Model evaluation complete!")
+    print("[COMPLETE] Model evaluation complete!")
     print("=" * 70)
-    print(f"\n📁 Reports saved to:")
+    print(f"\n[SAVED] Reports saved to:")
     print(f"   - Confusion matrix: {cm_path}")
     print(f"   - Classification report: {report_path}")
 
