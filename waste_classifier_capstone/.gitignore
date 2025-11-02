@@ -66,8 +66,16 @@ outputs/models/*.tflite
 outputs/models/*.pb
 !outputs/models/.gitkeep
 
-# Reports and visualizations (generated)
-outputs/reports/*
+# Reports and visualizations
+# Allow important reports but ignore training history plots
+outputs/reports/*_history.png
+outputs/reports/*_history.pkl
+outputs/reports/sample_images.png
+# Keep important reports (markdown, confusion matrices, classification reports)
+!outputs/reports/*.md
+!outputs/reports/*confusion_matrix.png
+!outputs/reports/*classification_report.txt
+!outputs/reports/class_distribution.png
 !outputs/reports/.gitkeep
 
 # Screenshots (generated)

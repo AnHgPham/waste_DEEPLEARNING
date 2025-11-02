@@ -1,0 +1,20 @@
+Model: baseline
+Test Accuracy: 0.7959
+Test Loss: 0.6833
+
+              precision    recall  f1-score   support
+
+     battery     0.8769    0.6000    0.7125        95
+  biological     0.9420    0.6436    0.7647       101
+   cardboard     0.7968    0.8142    0.8054       183
+     clothes     0.8700    0.9401    0.9037       534
+       glass     0.8362    0.8007    0.8180       306
+       metal     0.6417    0.7476    0.6906       103
+       paper     0.7062    0.8107    0.7548       169
+     plastic     0.7136    0.7387    0.7259       199
+       shoes     0.7156    0.7588    0.7366       199
+       trash     0.7903    0.5158    0.6242        95
+
+    accuracy                         0.7959      1984
+   macro avg     0.7889    0.7370    0.7536      1984
+weighted avg     0.8012    0.7959    0.7935      1984
