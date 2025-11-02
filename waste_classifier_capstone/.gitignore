@@ -59,10 +59,11 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 
-# Model outputs (too large for git)
-outputs/models/*.keras
+# Model outputs
+# .keras and .tflite are tracked with Git LFS
+# outputs/models/*.keras  # Now tracked with Git LFS
 outputs/models/*.h5
-outputs/models/*.tflite
+# outputs/models/*.tflite  # Now tracked with Git LFS
 outputs/models/*.pb
 !outputs/models/.gitkeep
 
