@@ -66,7 +66,7 @@ def run_realtime_detection(args):
     model_path = get_model_path(model_name, 'final')
     
     if not model_path.exists():
-        print(f"\n❌ ERROR: Classifier model not found: {model_path}")
+        print(f"\n[ERROR] Classifier model not found: {model_path}")
         print(f"\n   Please train the {model_name} model first:")
         if model_name == 'baseline':
             print("   python scripts/week1_baseline_training.py")
@@ -74,38 +74,38 @@ def run_realtime_detection(args):
             print("   python scripts/week2_transfer_learning.py")
         return
     
-    print(f"\n📦 Loading classifier model: {model_name}")
+    print(f"\n[LOADING] Loading classifier model: {model_name}")
     classifier_model = tf.keras.models.load_model(model_path)
-    print(f"   ✅ Classifier loaded from {model_path}")
-    
+    print(f"   [OK] Classifier loaded from {model_path}")
+
     # Load YOLO model
-    print(f"\n📦 Loading YOLOv8 detection model...")
+    print(f"\n[LOADING] Loading YOLOv8 detection model...")
     yolo_model = load_yolo_model(YOLO_MODEL)
     
     # Setup video source
     if args.video:
-        print(f"\n🎥 Opening video file: {args.video}")
+        print(f"\n[VIDEO] Opening video file: {args.video}")
         cap = cv2.VideoCapture(args.video)
         source_name = "Video File"
     else:
-        print(f"\n📷 Opening camera {args.camera}...")
+        print(f"\n[CAMERA] Opening camera {args.camera}...")
         cap = cv2.VideoCapture(args.camera)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT)
         source_name = f"Camera {args.camera}"
-    
+
     if not cap.isOpened():
-        print(f"❌ ERROR: Could not open video source")
+        print(f"[ERROR] Could not open video source")
         return
-    
-    print(f"   ✅ {source_name} opened successfully")
+
+    print(f"   [OK] {source_name} opened successfully")
     
     # Create screenshots directory
     SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
     
     # Main loop
     print("\n" + "=" * 70)
-    print("🚀 Starting real-time detection...")
+    print("[START] Starting real-time detection...")
     print("=" * 70)
     print("\nControls:")
     print("   - Press 'q' to quit")
@@ -122,7 +122,7 @@ def run_realtime_detection(args):
             if not paused:
                 ret, frame = cap.read()
                 if not ret:
-                    print("\n⚠️ End of video stream")
+                    print("\n[WARNING] End of video stream")
                     break
                 
                 frame_count += 1
@@ -147,36 +147,36 @@ def run_realtime_detection(args):
             
             # Handle key presses
             key = cv2.waitKey(1) & 0xFF
-            
+
             if key == ord('q'):
-                print("\n⏹️  Stopping detection...")
+                print("\n[STOP] Stopping detection...")
                 break
             elif key == ord('s'):
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 screenshot_path = SCREENSHOTS_DIR / f"detection_{timestamp}.jpg"
                 cv2.imwrite(str(screenshot_path), annotated_frame)
-                print(f"📸 Screenshot saved: {screenshot_path}")
+                print(f"[SAVED] Screenshot saved: {screenshot_path}")
             elif key == ord('p'):
                 paused = not paused
-                status = "⏸️  PAUSED" if paused else "▶️  RESUMED"
+                status = "[PAUSED]" if paused else "[RESUMED]"
                 print(status)
     
     except KeyboardInterrupt:
-        print("\n\n⚠️ Interrupted by user")
-    
+        print("\n\n[WARNING] Interrupted by user")
+
     finally:
         # Cleanup
         cap.release()
         cv2.destroyAllWindows()
-        
+
         print("\n" + "=" * 70)
-        print("✅ Real-time detection session complete!")
+        print("[OK] Real-time detection session complete!")
         print("=" * 70)
-        print(f"\n📊 Session Statistics:")
+        print(f"\n[STATS] Session Statistics:")
         print(f"   - Total frames processed: {frame_count}")
         print(f"   - Total objects detected: {detection_count}")
         print(f"   - Average detections per frame: {detection_count/max(frame_count, 1):.2f}")
-        print(f"\n📁 Screenshots saved to: {SCREENSHOTS_DIR}")
+        print(f"\n[SAVED] Screenshots saved to: {SCREENSHOTS_DIR}")
 
 def main():
     parser = argparse.ArgumentParser(description='Real-time Waste Detection')

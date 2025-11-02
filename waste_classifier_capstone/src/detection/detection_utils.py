@@ -54,8 +54,8 @@ def load_yolo_model(model_path=YOLO_MODEL):
         # Fallback: try with the original approach
         print(f"   Note: Using fallback loading method")
         model = YOLO(model_path)
-    
-    print("✅ YOLOv8 model loaded.")
+
+    print("[OK] YOLOv8 model loaded.")
     return model
 
 

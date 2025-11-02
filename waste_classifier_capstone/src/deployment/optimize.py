@@ -37,7 +37,7 @@ def convert_to_tflite(model, output_path):
     with open(output_path, 'wb') as f:
         f.write(tflite_model)
 
-    print(f"✅ TFLite model saved to {output_path}")
+    print(f"[OK] TFLite model saved to {output_path}")
 
 
 def representative_dataset_generator(data_source, num_samples=100):
@@ -118,7 +118,7 @@ def quantize_model(model, output_path, data_source=None):
     with open(output_path, 'wb') as f:
         f.write(tflite_quant_model)
 
-    print(f"✅ Quantized TFLite model saved to {output_path}")
+    print(f"[OK] Quantized TFLite model saved to {output_path}")
 
 
 def evaluate_tflite_model(tflite_model_path, test_dir, img_size, num_classes):
