@@ -60,12 +60,16 @@ data/processed/*
 !data/processed/.gitkeep
 
 # Model outputs
-# .keras and .tflite are tracked with Git LFS
-# outputs/models/*.keras  # Now tracked with Git LFS
+# Allow .keras and .tflite files to be committed
+# If files are too large (>100MB), use Git LFS:
+#   git lfs install
+#   git lfs track "*.keras"
+#   git lfs track "*.tflite"
 outputs/models/*.h5
-# outputs/models/*.tflite  # Now tracked with Git LFS
 outputs/models/*.pb
 !outputs/models/.gitkeep
+!outputs/models/*.keras
+!outputs/models/*.tflite
 
 # Reports and visualizations
 # Allow important reports but ignore training history plots
